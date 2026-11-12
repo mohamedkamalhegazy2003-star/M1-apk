@@ -173,7 +173,7 @@ class MainActivity : Activity() {
             override fun onPageFinished(view: WebView, loadedUrl: String) {
                 val lang = prefs.getString("language", "en") ?: "en"
                 val theme = prefs.getString("theme", "light") ?: "light"
-                val js = "(function(){try{localStorage.setItem('qm-lang'," + org.json.JSONObject.quote(lang) + ");localStorage.setItem('qm-theme'," + org.json.JSONObject.quote(theme) + ");var h=document.documentElement;h.lang=" + org.json.JSONObject.quote(lang) + ";h.dir=" + org.json.JSONObject.quote(if (lang == "ar") "rtl" else "ltr") + ";if(" + org.json.JSONObject.quote(theme) + "==='auto')h.removeAttribute('data-theme');else h.setAttribute('data-theme'," + org.json.JSONObject.quote(theme) + ");}catch(e){}})();"
+                val js = "(function(){try{var l=" + org.json.JSONObject.quote(lang) + ",t=" + org.json.JSONObject.quote(theme) + ";var changed=localStorage.getItem('qm-lang')!==l||localStorage.getItem('qm-theme')!==t;if(changed){localStorage.setItem('qm-lang',l);localStorage.setItem('qm-theme',t);location.reload();return;}var h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';if(t==='auto')h.removeAttribute('data-theme');else h.setAttribute('data-theme',t);}catch(e){}})();"
                 view.evaluateJavascript(js, null)
             }
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
